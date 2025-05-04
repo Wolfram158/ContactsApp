@@ -4,14 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.ContactsContract
+import androidx.core.net.toUri
+import ru.yadro.android.data.mapper.getContactOrLetterList
 import ru.yadro.android.domain.entity.Contact
 import ru.yadro.android.domain.repository.ContactsRepository
 import javax.inject.Inject
-import androidx.core.net.toUri
 
 class ContactsRepositoryImpl @Inject constructor(
     private val context: Context
 ) : ContactsRepository {
+    override fun getContactsWithLetters() = getContacts().getContactOrLetterList()
+
     override fun getContacts(): List<Contact> {
         val contacts = mutableListOf<Contact>()
         val projection =

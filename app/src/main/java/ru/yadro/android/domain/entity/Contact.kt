@@ -7,4 +7,4 @@ data class Contact(
     val name: String,
     val contactUri: Uri,
     val mainPhone: String? = null,
-)
+): ContactOrLetter(id)

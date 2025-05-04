@@ -5,10 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import ru.yadro.android.R
 import ru.yadro.android.databinding.FragmentContactsBinding
+import ru.yadro.android.domain.entity.ContactOrLetter
 import ru.yadro.android.presentation.App
+import ru.yadro.android.presentation.Error
+import ru.yadro.android.presentation.Initial
+import ru.yadro.android.presentation.Result
 import ru.yadro.android.presentation.ViewModelFactory
 import ru.yadro.android.presentation.contacts.adapter.ContactsAdapter
 import javax.inject.Inject
@@ -55,11 +66,37 @@ class ContactsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        subscribeContacts()
     }
 
     private fun setupRecyclerView() {
         binding.contactsRv.adapter = adapter
-        adapter.submitList(viewModel.getContacts())
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun subscribeContacts() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.contacts.collectLatest {
+                    when (it) {
+                        is Error<*> -> {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.error_load_contacts),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            requireActivity().finish()
+                        }
+
+                        is Initial<*> -> {}
+                        is Result<*> -> {
+                            adapter.submitList(it.result as List<ContactOrLetter>)
+                        }
+                    }
+                }
+            }
+        }
+        viewModel.emitContacts()
     }
 
     companion object {

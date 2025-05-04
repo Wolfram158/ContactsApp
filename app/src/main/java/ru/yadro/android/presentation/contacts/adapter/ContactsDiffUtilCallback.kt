@@ -1,14 +1,14 @@
 package ru.yadro.android.presentation.contacts.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.yadro.android.domain.entity.Contact
+import ru.yadro.android.domain.entity.ContactOrLetter
 
-class ContactsDiffUtilCallback : DiffUtil.ItemCallback<Contact>() {
-    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem.id == newItem.id
+class ContactsDiffUtilCallback : DiffUtil.ItemCallback<ContactOrLetter>() {
+    override fun areItemsTheSame(oldItem: ContactOrLetter, newItem: ContactOrLetter): Boolean {
+        return oldItem.key == newItem.key
     }
 
-    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+    override fun areContentsTheSame(oldItem: ContactOrLetter, newItem: ContactOrLetter): Boolean {
         return oldItem == newItem
     }
 }

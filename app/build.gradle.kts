@@ -41,6 +41,9 @@ android {
 
 dependencies {
 
+    implementation(libs.coroutines.android)
+    implementation(libs.coroutines.core)
+
     implementation(libs.dagger)
     implementation(libs.dagger.support)
     ksp(libs.dagger.compiler)

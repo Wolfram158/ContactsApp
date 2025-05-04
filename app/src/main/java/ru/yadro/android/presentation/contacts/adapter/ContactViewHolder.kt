@@ -2,18 +2,19 @@ package ru.yadro.android.presentation.contacts.adapter
 
 import android.content.Context
 import android.provider.ContactsContract
-import androidx.recyclerview.widget.RecyclerView
 import ru.yadro.android.R
 import ru.yadro.android.databinding.ItemContactBinding
 import ru.yadro.android.domain.entity.Contact
+import ru.yadro.android.domain.entity.ContactOrLetter
 import java.io.BufferedInputStream
 
 class ContactViewHolder(
     private val binding: ItemContactBinding,
     private val context: Context,
     private val onContactClickListener: ContactsAdapter.OnContactClickListener
-) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: Contact) {
+) : ContactOrLetterViewHolder(binding.root) {
+    override fun <T : ContactOrLetter> bind(item: T) {
+        item as Contact
         with(binding) {
             contactName.text = item.name
             contactPhone.text =
@@ -38,4 +39,5 @@ class ContactViewHolder(
             }
         }
     }
+
 }
