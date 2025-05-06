@@ -1,6 +1,7 @@
 package ru.yadro.android.presentation.contacts.adapter
 
 import android.content.Context
+import android.graphics.BitmapFactory.decodeStream
 import android.provider.ContactsContract
 import ru.yadro.android.R
 import ru.yadro.android.databinding.ItemContactBinding
@@ -28,7 +29,7 @@ class ContactViewHolder(
                 null -> contactPhoto.setImageResource(R.drawable.phone)
                 else -> {
                     val buf = BufferedInputStream(contactPhotoInputStream)
-                    val bitmap = android.graphics.BitmapFactory.decodeStream(buf)
+                    val bitmap = decodeStream(buf)
                     contactPhoto.setImageBitmap(bitmap)
                 }
             }
